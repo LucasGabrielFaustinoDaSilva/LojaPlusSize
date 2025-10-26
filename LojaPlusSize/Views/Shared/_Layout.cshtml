@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bella Plus</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+    <style>
+        :root {
+            --rosa-terroso: #D4A8A8;
+            --bege-rosado: #E8D0C2;
+            --off-white: #F8F4F0;
+            --cinza-escuro: #2C2C2C;
+            --rosa-suave: #E8B4B4;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: var(--off-white);
+            color: var(--cinza-escuro);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            flex: 1;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* NAVBAR COMPACTA */
+        .navbar {
+            background: linear-gradient(135deg, var(--off-white) 0%, var(--bege-rosado) 100%) !important;
+            border-bottom: 1px solid var(--rosa-terroso);
+            padding: 0.8rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--cinza-escuro) !important;
+            font-size: 1.3rem;
+        }
+        
+        .nav-link {
+            color: var(--cinza-escuro) !important;
+            font-weight: 500;
+            padding: 6px 12px !important;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            color: var(--rosa-terroso) !important;
+        }
+        
+        /* FOOTER SUPER COMPACTO */
+        .footer {
+            background: var(--cinza-escuro);
+            color: var(--off-white);
+            padding: 20px 0 10px;
+            margin-top: auto;
+            font-size: 0.8rem;
+        }
+        
+        .footer h5 {
+            color: var(--bege-rosado);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .footer p {
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .footer a {
+            color: var(--off-white);
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: var(--rosa-terroso);
+        }
+        
+        .social-links a {
+            margin-right: 8px;
+        }
+        
+        /* PRODUCT CARDS */
+        .product-card {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(212, 168, 168, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 168, 168, 0.15);
+        }
+        
+        .product-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--rosa-terroso) 0%, var(--rosa-suave) 100%);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, var(--rosa-terroso) 0%, var(--rosa-suave) 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .section-title {
+            color: var(--cinza-escuro);
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--bege-rosado) 0%, var(--off-white) 50%, var(--rosa-suave) 100%);
+            padding: 50px 0;
+            margin-bottom: 30px;
+        }
+        
+        /* RESPONSIVIDADE */
+        @@media (max-width: 768px) {
+            .footer {
+                padding: 15px 0 8px;
+                font-size: 0.75rem;
+            }
+            
+            .footer .row > div {
+                margin-bottom: 15px;
+            }
+            
+            .hero-section {
+                padding: 30px 0;
+            }
+            
+            .product-image {
+                height: 180px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @@media (max-width: 576px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .hero-section {
+                padding: 20px 0;
+            }
+            
+            .btn-primary-custom {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-crown me-2"></i>Bella Plus
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Produto" asp-action="Index">Coleção</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">Sobre</a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Carrinho" asp-action="Index">
+                                <i class="fas fa-shopping-bag"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Conta" asp-action="Index">
+                                <i class="fas fa-user"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- FOOTER SUPER COMPACTO -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-3">
+                    <h5><i class="fas fa-crown me-2"></i>Bella Plus</h5>
+                    <p>Moda que celebra a beleza real</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-3">
+                    <h5>Contato</h5>
+                    <p><i class="fas fa-phone me-2"></i>(11) 9999-9999</p>
+                    <p><i class="fas fa-envelope me-2"></i>contato@bellaplus.com</p>
+                </div>
+                <div class="col-lg-4 mb-3">
+                    <h5>Links</h5>
+                    <p><a href="@Url.Action("Index", "Home")">Início</a></p>
+                    <p><a href="@Url.Action("Index", "Produto")">Coleção</a></p>
+                    <p><a href="@Url.Action("Privacy", "Home")">Sobre Nós</a></p>
+                </div>
+            </div>
+            <hr class="my-2">
+            <div class="text-center">
+                <small>&copy; 2025 Bella Plus - Todas as mulheres são belas</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

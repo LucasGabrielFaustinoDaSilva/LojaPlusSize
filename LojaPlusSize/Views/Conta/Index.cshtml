@@ -1,0 +1,94 @@
+@{
+  ViewData["Title"] = "Minha Conta";
+}
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <h1 class="section-title">👤 Minha Conta</h1>
+
+      <div class="row g-4">
+        <!-- Perfil -->
+        <div class="col-md-6">
+          <div class="product-card p-4 h-100">
+            <div class="text-center mb-4">
+              <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--rosa-terroso) 0%, var(--rosa-suave) 100%);">
+                <i class="fas fa-user fa-2x text-white"></i>
+              </div>
+              <h5 class="mt-3 fw-bold">Maria Silva</h5>
+              <p class="text-muted">maria@email.com</p>
+              <span class="badge bg-success">Cliente desde 2024</span>
+            </div>
+
+            <div class="list-group list-group-flush">
+              <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                <i class="fas fa-user-edit me-3" style="color: var(--rosa-terroso);"></i>Editar Perfil
+              </a>
+              <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                <i class="fas fa-map-marker-alt me-3" style="color: var(--rosa-terroso);"></i>Meus Endereços
+              </a>
+              <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                <i class="fas fa-heart me-3" style="color: var(--rosa-terroso);"></i>Lista de Desejos
+              </a>
+              <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                <i class="fas fa-lock me-3" style="color: var(--rosa-terroso);"></i>Alterar Senha
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pedidos e Ações -->
+        <div class="col-md-6">
+          <!-- Meus Pedidos -->
+          <div class="product-card p-4 mb-4">
+            <h5 class="fw-bold mb-4">
+              <i class="fas fa-shopping-bag me-2" style="color: var(--rosa-terroso);"></i>Meus Pedidos
+            </h5>
+
+            <div class="text-center py-4">
+              <i class="fas fa-shopping-bag fa-3x mb-3" style="color: var(--bege-rosado);"></i>
+              <p class="text-muted mb-3">Nenhum pedido realizado ainda</p>
+              <a href="@Url.Action("Index", "Produto")" class="btn btn-primary-custom">
+                Fazer Primeira Compra
+              </a>
+            </div>
+          </div>
+
+          <!-- Ações Rápidas -->
+          <div class="product-card p-4">
+            <h5 class="fw-bold mb-4">
+              <i class="fas fa-bolt me-2" style="color: var(--rosa-terroso);"></i>Ações Rápidas
+            </h5>
+            <div class="row g-3">
+              <div class="col-6">
+                <a href="@Url.Action("Index", "Carrinho")" class="btn btn-outline-primary w-100 py-3">
+                  <i class="fas fa-shopping-cart fa-lg mb-2"></i><br>
+                  <small>Carrinho</small>
+                </a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn btn-outline-primary w-100 py-3">
+                  <i class="fas fa-heart fa-lg mb-2"></i><br>
+                  <small>Favoritos</small>
+                </a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn btn-outline-primary w-100 py-3">
+                  <i class="fas fa-history fa-lg mb-2"></i><br>
+                  <small>Histórico</small>
+                </a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn btn-outline-primary w-100 py-3">
+                  <i class="fas fa-cog fa-lg mb-2"></i><br>
+                  <small>Configurações</small>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
