@@ -1,135 +1,148 @@
 -- =============================================
--- BELLA PLUS - BANCO DE DADOS COMPLETO
+-- LOJAPLUSSIZE - BACKUP COM PÁGINA COLEÇÃO
 -- =============================================
 
--- Criar Banco de Dados
-CREATE DATABASE IF NOT EXISTS LojaPlusSize;
+DROP DATABASE IF EXISTS LojaPlusSize;
+CREATE DATABASE LojaPlusSize;
 USE LojaPlusSize;
 
 -- =============================================
 -- TABELAS
 -- =============================================
 
--- Tabela de Categorias
-CREATE TABLE IF NOT EXISTS Categorias (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Categorias (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
     Nome VARCHAR(100) NOT NULL,
     Descricao TEXT,
-    DataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP
+    ImagemUrl VARCHAR(255),
+    DataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Ativo BOOLEAN DEFAULT TRUE
 );
 
--- Tabela de Produtos
-CREATE TABLE IF NOT EXISTS Produtos (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Produtos (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
     Nome VARCHAR(200) NOT NULL,
     Descricao TEXT,
+    ImagemUrl VARCHAR(255),
     Preco DECIMAL(10,2) NOT NULL,
-    TamanhosDisponiveis VARCHAR(100) NOT NULL,
+    PrecoPromocional DECIMAL(10,2),
     CategoriaId INT,
-    ImagemUrl VARCHAR(500),
+    TamanhosDisponiveis VARCHAR(100),
+    Material VARCHAR(100),
+    Cor VARCHAR(50),
+    Destaque BOOLEAN DEFAULT FALSE,
     EmEstoque BOOLEAN DEFAULT TRUE,
+    Ativo BOOLEAN DEFAULT TRUE,
     DataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DataAtualizacao DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (CategoriaId) REFERENCES Categorias(Id)
 );
 
--- Tabela de Clientes
-CREATE TABLE IF NOT EXISTS Clientes (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(200) NOT NULL,
-    Email VARCHAR(200) UNIQUE NOT NULL,
-    Telefone VARCHAR(20),
-    DataNascimento DATE,
-    DataCadastro DATETIME DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE ProdutoImagens (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    ProdutoId INT NOT NULL,
+    ImagemUrl VARCHAR(255) NOT NULL,
+    ImagemPrincipal BOOLEAN DEFAULT FALSE,
+    Ordem INT DEFAULT 0,
+    DataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ProdutoId) REFERENCES Produtos(Id) ON DELETE CASCADE,
+    UNIQUE KEY unique_imagem_produto (ProdutoId, ImagemUrl)
 );
 
--- Tabela de Pedidos
-CREATE TABLE IF NOT EXISTS Pedidos (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
-    ClienteId INT,
-    DataPedido DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Status ENUM('Pendente', 'Processando', 'Enviado', 'Entregue') DEFAULT 'Pendente',
-    Total DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (ClienteId) REFERENCES Clientes(Id)
+CREATE TABLE Estoque (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    ProdutoId INT NOT NULL,
+    Tamanho VARCHAR(10) NOT NULL,
+    Quantidade INT DEFAULT 0,
+    DataAtualizacao DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ProdutoId) REFERENCES Produtos(Id) ON DELETE CASCADE,
+    UNIQUE KEY unique_produto_tamanho (ProdutoId, Tamanho)
 );
 
 -- =============================================
--- DADOS DE EXEMPLO
+-- DADOS - CATEGORIAS
 -- =============================================
-
--- Inserir Categorias
-INSERT INTO Categorias (Nome, Descricao) VALUES
-('Vestidos', 'Vestidos elegantes e casuais para todos os momentos'),
-('Blusas', 'Blusas confortáveis e estilosas para o dia a dia'),
-('Calças', 'Calças que valorizam o corpo com conforto'),
-('Saias', 'Saias modernas e confortáveis'),
-('Conjuntos', 'Conjuntos prontos para looks completos');
-
--- Inserir Produtos
-INSERT INTO Produtos (Nome, Descricao, Preco, TamanhosDisponiveis, CategoriaId, ImagemUrl) VALUES
-('Vestido Floral Plus Size', 'Vestido com estampa floral, ideal para verão e ocasiões especiais', 89.90, '44,46,48,50', 1, 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&h=500&fit=crop'),
-('Blusa Manga Curta Comfort', 'Blusa em malha confortável para o dia a dia, com caimento perfeito', 49.90, '42,44,46,48,50', 2, 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=500&h=500&fit=crop'),
-('Calça Jeans Elástica', 'Calça jeans com elastano para maior conforto e mobilidade', 119.90, '44,46,48,50,52', 3, 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&h=500&fit=crop'),
-('Saia Evasê Plus Size', 'Saia evasê em tecido fluido, perfeita para compor looks elegantes', 69.90, '42,44,46,48', 4, 'https://images.unsplash.com/photo-1583496661160-fb5886a13d77?w=500&h=500&fit=crop'),
-('Vestido Midi Elegante', 'Vestido midi perfeito para ocasiões especiais e eventos', 129.90, '46,48,50,52', 1, 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&h=500&fit=crop'),
-('Blusa Tricot Conforto', 'Blusa em tricot super confortável para os dias mais frios', 79.90, '44,46,48,50', 2, 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=500&fit=crop'),
-('Calça Wide Leg', 'Calça wide leg da moda, super estilosa e confortável', 139.90, '44,46,48,50,52', 3, 'https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=500&h=500&fit=crop'),
-('Conjunto Camiseta e Saia', 'Conjunto prático e moderno para looks do dia a dia', 159.90, '42,44,46,48,50', 5, 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500&h=500&fit=crop');
-
--- Inserir Clientes Exemplo
-INSERT INTO Clientes (Nome, Email, Telefone, DataNascimento) VALUES
-('Maria Silva', 'maria.silva@email.com', '(11) 99999-9999', '1985-03-15'),
-('Ana Santos', 'ana.santos@email.com', '(11) 98888-8888', '1990-07-22'),
-('Carla Oliveira', 'carla.oliveira@email.com', '(11) 97777-7777', '1988-11-30');
+INSERT INTO Categorias (Nome, Descricao, ImagemUrl) VALUES
+('Vestidos', 'Looks perfeitos para momentos especiais', '/images/categorias/vestidos.jpg'),
+('Blusas', 'Conforto e estilo para o dia a dia', '/images/categorias/blusas.jpg'),
+('Calças', 'Modelos que valorizam seu corpo', '/images/categorias/calcas.jpg'),
+('Saias', 'Elegância e movimento em cada passo', '/images/categorias/saias.jpg'),
+('Conjuntos', 'Produções completas e práticas', '/images/categorias/conjuntos.jpg');
 
 -- =============================================
--- CONSULTAS ÚTEIS
+-- DADOS - PRODUTOS (DESCRIÇÕES SIMPLES)
 -- =============================================
+INSERT INTO Produtos (Nome, Descricao, ImagemUrl, Preco, PrecoPromocional, CategoriaId, TamanhosDisponiveis, Material, Cor, Destaque, EmEstoque) VALUES
+('Vestido Floral', 'Perfeito para eventos e ocasiões especiais', '/images/produtos/vestido-floral-1.jpg', 129.90, 99.90, 1, '44,46,48,50', 'Viscose', 'Floral', TRUE, TRUE),
+('Blusa Básica', 'Essencial para compor looks do cotidiano', '/images/produtos/blusa-basica-1.jpg', 49.90, 39.90, 2, '44,46,48,50,52', 'Algodão', 'Preto', FALSE, TRUE),
+('Calça Jeans', 'Conforto e estilo para o dia a dia', '/images/produtos/calca-jeans-1.jpg', 89.90, NULL, 3, '44,46,48,50', 'Jeans', 'Azul', TRUE, TRUE),
+('Saia Plissada', 'Elegância e movimento para seus momentos', '/images/produtos/saia-plissada-1.jpg', 79.90, 69.90, 4, '44,46,48,50', 'Poliéster', 'Preto', FALSE, TRUE),
+('Conjunto Verão', 'Praticidade e conforto para dias quentes', '/images/produtos/conjunto-casual-1.jpg', 119.90, 99.90, 5, '44,46,48,50,52', 'Algodão', 'Branco', TRUE, TRUE),
+('Vestido Midi', 'Sofisticação para ocasiões especiais', '/images/produtos/vestido-midi-1.jpg', 139.90, 119.90, 1, '46,48,50,52', 'Cetim', 'Vermelho', TRUE, TRUE),
+('Blusa Manga Longa', 'Conforto para os dias mais amenos', '/images/produtos/blusa-manga-longa-1.jpg', 59.90, 49.90, 2, '44,46,48,50', 'Malha', 'Cinza', FALSE, TRUE);
 
--- Consulta para ver todos os produtos com suas categorias
+-- =============================================
+-- DADOS - IMAGENS ADICIONAIS (PARA A COLEÇÃO)
+-- =============================================
+INSERT INTO ProdutoImagens (ProdutoId, ImagemUrl, ImagemPrincipal, Ordem) VALUES
+-- Vestido Floral
+(1, '/images/produtos/vestido-floral-1.jpg', TRUE, 1),
+(1, '/images/produtos/vestido-floral-2.jpg', FALSE, 2),
+(1, '/images/produtos/vestido-floral-3.jpg', FALSE, 3),
+
+-- Blusa Básica
+(2, '/images/produtos/blusa-basica-1.jpg', TRUE, 1),
+(2, '/images/produtos/blusa-basica-2.jpg', FALSE, 2),
+
+-- Calça Jeans
+(3, '/images/produtos/calca-jeans-1.jpg', TRUE, 1),
+(3, '/images/produtos/calca-jeans-2.jpg', FALSE, 2),
+(3, '/images/produtos/calca-jeans-3.jpg', FALSE, 3),
+
+-- Saia Plissada
+(4, '/images/produtos/saia-plissada-1.jpg', TRUE, 1),
+(4, '/images/produtos/saia-plissada-2.jpg', FALSE, 2),
+
+-- Conjunto Verão
+(5, '/images/produtos/conjunto-casual-1.jpg', TRUE, 1),
+(5, '/images/produtos/conjunto-casual-2.jpg', FALSE, 2),
+(5, '/images/produtos/conjunto-casual-3.jpg', FALSE, 3),
+
+-- Vestido Midi
+(6, '/images/produtos/vestido-midi-1.jpg', TRUE, 1),
+(6, '/images/produtos/vestido-midi-2.jpg', FALSE, 2),
+
+-- Blusa Manga Longa
+(7, '/images/produtos/blusa-manga-longa-1.jpg', TRUE, 1),
+(7, '/images/produtos/blusa-manga-longa-2.jpg', FALSE, 2);
+
+-- =============================================
+-- DADOS - ESTOQUE
+-- =============================================
+INSERT INTO Estoque (ProdutoId, Tamanho, Quantidade) VALUES
+(1, '44', 15), (1, '46', 20), (1, '48', 18), (1, '50', 12),
+(2, '44', 25), (2, '46', 30), (2, '48', 22), (2, '50', 18), (2, '52', 15),
+(3, '44', 10), (3, '46', 15), (3, '48', 12), (3, '50', 8),
+(4, '44', 20), (4, '46', 25), (4, '48', 18), (4, '50', 15),
+(5, '44', 12), (5, '46', 16), (5, '48', 14), (5, '50', 10), (5, '52', 8),
+(6, '46', 15), (6, '48', 18), (6, '50', 12), (6, '52', 10),
+(7, '44', 20), (7, '46', 22), (7, '48', 18), (7, '50', 15);
+
+-- =============================================
+-- CONSULTA PARA PÁGINA COLEÇÃO (TODAS AS IMAGENS)
+-- =============================================
+SELECT '=== TODAS AS IMAGENS DA COLEÇÃO ===' AS '';
 SELECT 
-    p.Id,
-    p.Nome AS Produto,
+    pi.ImagemUrl,
+    p.Nome,
+    p.Descricao,
     p.Preco,
-    p.TamanhosDisponiveis,
-    c.Nome AS Categoria,
-    p.EmEstoque
-FROM Produtos p
-LEFT JOIN Categorias c ON p.CategoriaId = c.Id
-ORDER BY p.DataCriacao DESC;
+    p.PrecoPromocional,
+    c.Nome as Categoria
+FROM ProdutoImagens pi
+JOIN Produtos p ON pi.ProdutoId = p.Id
+JOIN Categorias c ON p.CategoriaId = c.Id
+WHERE p.Ativo = TRUE
+ORDER BY p.Id, pi.Ordem;
 
--- Consulta para produtos em estoque
-SELECT 
-    Nome,
-    Preco,
-    TamanhosDisponiveis
-FROM Produtos 
-WHERE EmEstoque = TRUE
-ORDER BY Preco ASC;
-
--- Consulta para produtos por categoria
-SELECT 
-    c.Nome AS Categoria,
-    COUNT(p.Id) AS TotalProdutos,
-    AVG(p.Preco) AS PrecoMedio
-FROM Categorias c
-LEFT JOIN Produtos p ON c.Id = p.CategoriaId
-GROUP BY c.Id, c.Nome;
-
--- =============================================
--- BACKUP E MANUTENÇÃO
--- =============================================
-
--- Comando para fazer backup (executar no terminal MySQL)
--- mysqldump -u root -p LojaPlusSize > backup_loja_plus_size.sql
-
--- Comando para restaurar backup
--- mysql -u root -p LojaPlusSize < backup_loja_plus_size.sql
-
--- Verificar tamanho das tabelas
-SELECT 
-    TABLE_NAME AS 'Tabela',
-    TABLE_ROWS AS 'Registros',
-    ROUND(DATA_LENGTH/1024/1024, 2) AS 'Tamanho (MB)'
-FROM information_schema.TABLES 
-WHERE TABLE_SCHEMA = 'LojaPlusSize'
-ORDER BY DATA_LENGTH DESC;
+SELECT '✅ BACKUP EXECUTADO! PÁGINA COLEÇÃO PRONTA.' AS '';
